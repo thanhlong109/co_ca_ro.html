@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cờ caro</title>
+    <style>
+        td,tr{ border:1px solid black;
+            width: 20px;height: 20px;
+            text-align: center;
+            }
+        .table1{border-collapse: collapse;}
+    
+        .player1{color:green;}
+        .player2{color:red;}
+        .green{background-color:green;}
+        .red{background-color:red;}
+    </style>
+</head>
+<body>
+
+    <table  class="table1" id="display"></table>
+    <div id="player1" class="green" style="width: 500px; text-align: center;">
+        <br>
+        <h3 style="color:white;">Player 1</h3>
+        <h4 style="color:white;">position: OY <input type="number" id="oy1">OX<input type="number" id="ox1"></h4>
+        <button type="button" onclick="player1Enter()">OK</button>
+        <br>
+        <br>
+    </div>
+    <div id="player2" class="red" style="width: 500px;text-align: center; display:none; ">
+        <br>
+        <h3 style="color:white;">Player 2</h3>
+        <h4 style="color:white;">position: OY<input type="number" id="oy2">OX<input type="number" id="ox2"></h4>
+        <button type="button" onclick="player2Enter()">OK</button>
+        <br>
+        <br>
+    </div>
+    <script>
+        let tableplay = [
+                            [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+                            [1,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [2,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [3,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [4,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [5,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [6,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [7,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [8,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [9,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [10,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [11,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [12,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [13,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [14,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                            [15,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
+                        ];
+        function drawgame(){
+            let draw="";
+            for(let oy=0;oy<=15;oy++){
+                draw+="<tr>";
+                for(let ox=0;ox<=15;ox++){
+                    if(tableplay[oy][ox]===16){
+                        draw+="<td>"+"</td>";
+                    }else if(tableplay[oy][ox]===17){//player 1 = 17
+                        draw+="<td class='player1'>X</td>";
+                    }else if(tableplay[oy][ox]===18){//player 2 = 18
+                        draw+="<td class='player2'>O</td>";
+                    }
+                    else{
+                        draw+="<td>"+tableplay[oy][ox]+"</td>";
+                    }
+                }
+                draw+="</tr>";
+            }
+            document.getElementById("display").innerHTML=draw;
+
+        }
+        drawgame();
+        function checkingame(oy,ox,numplayer){
+            let check ;
+            if((numplayer===tableplay[oy+1][ox]&&numplayer===tableplay[oy+2][ox])||(numplayer===tableplay[oy-1][ox]&&numplayer===tableplay[oy+1][ox])||(numplayer===tableplay[oy-1][ox]&&numplayer===tableplay[oy-2][ox])){
+                console.log("hàng  dọc");
+                check = true
+            }else if((numplayer===tableplay[oy][ox+1]&&numplayer===tableplay[oy][ox+2])||(numplayer===tableplay[oy][ox-1]&&numplayer===tableplay[oy][ox+1])||(numplayer===tableplay[oy][ox-1]&&numplayer===tableplay[oy][ox-2])){
+                console.log("hàng ngang");
+                check = true
+            }else if((numplayer===tableplay[oy-1][ox-1]&&numplayer===tableplay[oy-2][ox-2])||(numplayer===tableplay[oy-1][ox-1]&&numplayer===tableplay[oy+1][ox+1])||(numplayer===tableplay[oy+1][ox+1]&&numplayer===tableplay[oy+2][ox+2])){
+                console.log("chéo chính");
+                check = true
+            }else if((numplayer===tableplay[oy-2][ox+2]&&numplayer===tableplay[oy-1][ox+1])||(numplayer===tableplay[oy-1][ox+1]&&numplayer===tableplay[oy+1][ox-1])||(numplayer===tableplay[oy+1][ox-1]&&numplayer===tableplay[oy+2][ox-2])){
+                console.log("chéo phụ");
+                check = true
+            }else{
+                check = false;
+            }
+            if(check){
+                if(numplayer===17){
+                    alert("Player 1 Win!!");
+                }else{
+                    alert("Player 2 Win!!");
+                }
+            }
+            
+        }
+        function player1Enter(){
+            let ox1 = +document.getElementById("ox1").value;
+            let oy1 = +document.getElementById("oy1").value;
+            tableplay[oy1][ox1] = 17;
+            drawgame();
+            checkingame(oy1,ox1,17);
+            document.getElementById("player1").style.display="none";
+            document.getElementById("player2").style.display="block";
+            document.getElementById("ox1").value="";
+            document.getElementById("oy1").value="";
+        }
+        function player2Enter(){
+            let ox2 = +document.getElementById("ox2").value;
+            let oy2 = +document.getElementById("oy2").value;
+            tableplay[oy2][ox2] = 18;
+            drawgame();
+            checkingame(oy2,ox2,18);
+            document.getElementById("player2").style.display="none";
+            document.getElementById("player1").style.display="block";
+            document.getElementById("ox2").value="";
+            document.getElementById("oy2").value="";
+        }
+    </script>
+</body>
+</html>
